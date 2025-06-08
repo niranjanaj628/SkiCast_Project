@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skicast - Weather Forecast</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body>
+    <nav class="navbar">
+      <div class="logo">🌤️ SkiCast</div>
+      <ul class="nav-links">
+        <li><a href="#temperature">Temperature</li></a>
+        <li><a href="#humidity">Humidity</li></a>
+        <li><a href="#windspeed">Wind</li></a>
+        <li><a href="#aqi">Air Quality</li></a>
+      </ul>
+    </nav>
+
+    <main class="container">
+        <div class="main-content">
+            <div class="temperature-box">
+                <h2>Today's Weather</h2>
+                <h3>Bengaluru</h3>
+                <p id="temperature">-- °C</p>
+                <div class="forecast-row">
+                    <div class="forecast-day">
+                        <p>Day 1</p>
+                        <p id="avg_temp_day1">Avg   : -- °C</p>
+                        <p id="min_temp_day1">Min   : -- °C</p>
+                        <p id="max_temp_day1">Max   : -- °C</p>
+                        <p id="precip_day1">Precip: -- mm</p>
+                        <p id="wind_day1">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 2</p>
+                        <p id="avg_temp_day2">Avg   : -- °C</p>
+                        <p id="min_temp_day2">Min   : -- °C</p>
+                        <p id="max_temp_day2">Max   : -- °C</p>
+                        <p id="precip_day2">Precip: -- mm</p>
+                        <p id="wind_day2">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 3</p>
+                        <p id="avg_temp_day3">Avg   : -- °C</p>
+                        <p id="min_temp_day3">Min   : -- °C</p>
+                        <p id="max_temp_day3">Max   : -- °C</p>
+                        <p id="precip_day3">Precip: -- mm</p>
+                        <p id="wind_day3">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 4</p>
+                        <p id="avg_temp_day4">Avg   : -- °C</p>
+                        <p id="min_temp_day4">Min   : -- °C</p>
+                        <p id="max_temp_day4">Max   : -- °C</p>
+                        <p id="precip_day4">Precip: -- mm</p>
+                        <p id="wind_day4">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 5</p>
+                        <p id="avg_temp_day5">Avg   : -- °C</p>
+                        <p id="min_temp_day5">Min   : -- °C</p>
+                        <p id="max_temp_day5">Max   : -- °C</p>
+                        <p id="precip_day5">Precip: -- mm</p>
+                        <p id="wind_day5">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 6</p>
+                        <p id="avg_temp_day6">Avg   : -- °C</p>
+                        <p id="min_temp_day6">Min   : -- °C</p>
+                        <p id="max_temp_day6">Max   : -- °C</p>
+                        <p id="precip_day6">Precip: -- mm</p>
+                        <p id="wind_day6">Wind  : -- m/s</p>
+                    </div>
+                    <div class="forecast-day">
+                        <p>Day 7</p>
+                        <p id="avg_temp_day7">Avg   : -- °C</p>
+                        <p id="min_temp_day7">Min   : -- °C</p>
+                        <p id="max_temp_day7">Max   : -- °C</p>
+                        <p id="precip_day7">Precip: -- mm</p>
+                        <p id="wind_day7">Wind  : -- m/s</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="temperatureChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- New layout: Left boxes + right (song + map) -->
+            <div class="small-boxes-and-map">
+                
+                <!-- Left Side: Small Boxes -->
+                <div class="small-boxes-row">
+                    <div class="small-box">
+                        <h2>Humidity</h2>
+                        <p id="humidity">--%</p>
+                    </div>
+                    <div class="small-box">
+                        <h2>Wind Speed</h2>
+                        <p id="windspeed">--</p>
+                    </div>
+                    <div class="small-box">
+                        <h2>Air Quality</h2>
+                        <p id="aqi">--</p>
+                        <small id="aqi_status">--</small>
+                    </div>
+                    <div class="small-box">
+                        <h2>UV Index </h2>
+                        <p id="uv_index">--</p>
+                    </div>
+                    <div class="small-box">
+                        <h2>Sunscreen Advice</h2>
+                        <p id="sunscreen">--</p>
+                    </div>
+                </div>
+
+                <!-- Right Side: Song Suggestion + Map -->
+                <div class="right-side">
+                    <div class="small-box song-suggestion">
+                        <h2>Listen to..</h2>
+                        <div class="song-details">
+                            <div class="song-info">
+                                <p id="song-title" class="song-title">--</p> <!-- Song title is bold -->
+                            </div>
+                            <div class="song-info">
+                                <p id="song-artist" class="song-artist">--</p> <!-- Artist name is regular -->
+                            </div>
+                        </div> <img id="song-image" src="{{ url_for('static', filename='images/play-bar.png') }}" alt="Play Bar" style="width: 100%; max-width: 300px; margin-top: 10px;" />
+                    </div>
+                    <div class="map-container" id="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12441.411129098972!2d77.5946135!3d12.9716063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae167fa6ed4e4d%3A0x6c76c753572b7495!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1699374189731!5m2!1sen!2sin"
+                            width="100%"
+                            height="100%"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="quote">
+                        <p id="quote">--</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Fetch current weather
+        fetch('/weather')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Weather data:", data);
+    
+                document.getElementById("temperature").textContent = `${data.temperature} °C`;
+                document.getElementById("humidity").textContent = `${data.humidity}%`;
+                document.getElementById("windspeed").textContent = `${data.windspeed} m/s`;
+                document.getElementById("aqi").textContent = data.aqi;
+                document.getElementById("aqi_status").textContent = data.aqi_status;
+                document.getElementById("uv_index").textContent = data.uv_index;
+                document.getElementById("sunscreen").textContent = data.sunscreen;
+    
+                if (data.song) {
+                    document.getElementById("song-title").textContent = data.song.title || "--";
+                    document.getElementById("song-artist").textContent = data.song.artist || "--";
+                }
+    
+                if (data.quote) {
+                    document.getElementById("quote").textContent = data.quote;
+                }
+    
+                applyTheme(data.temperature);
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+            });
+    
+        
+        // Fetch forecast data
+        fetch('/forecast')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Forecast data:", data);
+
+                // Prepare data for the chart
+                const labels = Object.keys(data);  // Days as the labels
+                const avgTemps = labels.map(day => {
+                    let avgTemp = data[day].avg_temp;
+                    
+                    // Log avgTemp to debug
+                    console.log(`Day: ${day}, Avg Temp: ${avgTemp}`);
+                    
+                    // Exclude negative temperatures by setting them to 0
+                    if (avgTemp < 0) {
+                        avgTemp = 0;
+                    }
+                    return avgTemp;
+                });
+
+                // Log the avgTemps array to check if values are correctly mapped
+                console.log("AvgTemps array:", avgTemps);
+
+                // Update the text content for each day's forecast (with actual values)
+                for (let i = 1; i <= 7; i++) {
+                    let avgTemp = data[i].avg_temp;
+                    if (avgTemp < 0) avgTemp = 0; // Exclude negative temperatures for display
+                    document.getElementById(`avg_temp_day${i}`).textContent = `Avg   : ${avgTemp} °C`;
+                    document.getElementById(`min_temp_day${i}`).textContent = `Min   : ${data[i].min_temp} °C`;
+                    document.getElementById(`max_temp_day${i}`).textContent = `Max   : ${data[i].max_temp} °C`;
+                    document.getElementById(`precip_day${i}`).textContent = `Prec: ${data[i].precip} mm`;
+                    document.getElementById(`wind_day${i}`).textContent = `Wind  : ${data[i].wind} m/s`;
+                }
+
+                // Create the line chart
+                const ctx = document.getElementById('temperatureChart').getContext('2d');
+                const temperatureChart = new Chart(ctx, {
+                    type: 'line',  // Line chart
+                    data: {
+                        labels: labels,  // Days (1 to 7)
+                        datasets: [{
+                            label: 'Average Temperature (°C)',  // Label for the chart
+                            data: avgTemps,  // Data points for average temperatures
+                            borderColor: 'rgb(230, 216, 60)',  // Line color
+                            backgroundColor: 'rgba(147, 148, 139, 0.2)',  // Fill under the line
+                            fill: true,  // Fill the area under the line
+                            tension: 0.4  // Smooth the line curve
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Day'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Temperature (°C)'
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching forecast data:', error));
+
+    
+        // Theme coloring based on temperature
+        function applyTheme(temperature) {
+            const root = document.documentElement;
+            root.classList.remove('theme-cool', 'theme-warm', 'theme-hot', 'theme-blazing');
+    
+            if (temperature <= 20) {
+                root.classList.add('theme-cool');
+            } else if (temperature <= 30) {
+                root.classList.add('theme-warm');
+            } else if (temperature <= 40) {
+                root.classList.add('theme-hot');
+            } else {
+                root.classList.add('theme-blazing');
+            }
+        }
+    });
+    </script>
+    
+
+    </body>
+
+    <footer>
+        <p>&copy; 2025 SkiCast. All rights reserved.</p>
+    </footer>
+
+    </html>
